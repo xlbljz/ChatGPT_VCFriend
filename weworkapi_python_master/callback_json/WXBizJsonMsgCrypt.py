@@ -21,7 +21,7 @@ import json
 import importlib
 importlib.reload(sys)
 # import ierror
-import weworkapi_python_master.callback_json.ierror 
+import weworkapi_python_master.callback_json.ierror as ierror
 # sys.setdefaultencoding('utf-8') 
 
 """
@@ -51,7 +51,7 @@ class SHA1:
             sortlist = [token, timestamp, nonce, encrypt]
             sortlist.sort()
             sha = hashlib.sha1()
-            sha.update("".join(sortlist))
+            sha.update("".join(sortlist).encode("utf-8"))
             return  ierror.WXBizMsgCrypt_OK, sha.hexdigest()
         # except Exception,e:
             # # print e

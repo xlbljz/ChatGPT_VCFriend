@@ -22,7 +22,7 @@ import importlib
 importlib.reload(sys)
 sys.stdin,sys.stdout,sys.stderr=stdi,stdo,stde
 # import ierror
-import weworkapi_python_master.callback.ierror 
+import weworkapi_python_master.callback.ierror as ierror
 # sys.setdefaultencoding('utf-8') 
 
 """
