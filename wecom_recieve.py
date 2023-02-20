@@ -32,7 +32,6 @@ def wxpush():
         # print(sVerifyMsgSig, sVerifyTimeStamp, sVerifyNonce, sVerifyEchoStr)
         ret, sEchoStr = wxcpt.VerifyURL(
             sVerifyMsgSig, sVerifyTimeStamp, sVerifyNonce, sVerifyEchoStr)
-        
         # print('===============')
         # print(ret,sEchoStr)
         aa = int(sEchoStr)
@@ -128,4 +127,4 @@ def send(touser, agen, content, MsgId):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=9000)
