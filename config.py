@@ -2,7 +2,7 @@
 import os
 globals().update(os.environ)
 class config():
-#openaikey
+# openaikey
     openaikey = OPENAI_KEY
 # 企业微信的接口回调token
     sToken = WECOM_TOKEN
@@ -11,5 +11,5 @@ class config():
 # 企业微信的企业ID
     sCorpID = WECOM_COMID
 #  腾讯云的函数公网访问域名
-    wechaturl = f'https://servicetencentcs.com/release/'
-
+    # 应用secret
+    corpsecret = WECOM_APP_SECRET
