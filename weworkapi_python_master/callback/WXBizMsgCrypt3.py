@@ -16,7 +16,8 @@ from Crypto.Cipher import AES
 import xml.etree.cElementTree as ET
 import socket
 
-import ierror
+# import ierror
+from weworkapi_python_master.callback import ierror
 
 
 """
@@ -225,6 +226,7 @@ class WXBizMsgCrypt(object):
 
     def VerifyURL(self, sMsgSignature, sTimeStamp, sNonce, sEchoStr):
         sha1 = SHA1()
+        # ret, signature = sha1.getSHA1(self.m_sToken, sTimeStamp, sNonce, sEchoStr)
         ret, signature = sha1.getSHA1(self.m_sToken, sTimeStamp, sNonce, sEchoStr)
         if ret != 0:
             return ret, None

@@ -1,5 +1,6 @@
-from weworkapi_python_master.callback_json.WXBizJsonMsgCrypt import WXBizJsonMsgCrypt
-from weworkapi_python_master.callback.WXBizMsgCrypt import WXBizMsgCrypt
+# from weworkapi_python_master.callback_json.WXBizJsonMsgCrypt import WXBizJsonMsgCrypt
+# from weworkapi_python_master.callback.WXBizMsgCrypt import WXBizMsgCrypt
+from weworkapi_python_master.callback.WXBizMsgCrypt3 import WXBizMsgCrypt
 import sys
 from flask import Flask, request, Response, jsonify
 import json
@@ -24,7 +25,8 @@ def wxpush():
     print(request)
     if request.method == 'GET':
 
-        wxcpt = WXBizJsonMsgCrypt(sToken, sEncodingAESKey, sCorpID)
+        # wxcpt = WXBizJsonMsgCrypt(sToken, sEncodingAESKey, sCorpID)
+        wxcpt = WXBizMsgCrypt(sToken, sEncodingAESKey, sCorpID)
         sVerifyMsgSig = request.args.get('msg_signature')
         sVerifyTimeStamp = request.args.get('timestamp')
         sVerifyNonce = request.args.get('nonce')

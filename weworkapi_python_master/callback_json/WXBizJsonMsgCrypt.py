@@ -6,7 +6,7 @@
 
 """
 # ------------------------------------------------------------------------
-
+import logging
 import base64
 import string
 import random
@@ -29,6 +29,19 @@ import weworkapi_python_master.callback_json.ierror as ierror
 请到官方网站 https://www.dlitz.net/software/pycrypto/ 下载pycrypto。
 下载后，按照README中的“Installation”小节的提示进行pycrypto安装。
 """
+WXBizMsgCrypt_OK = 0
+WXBizMsgCrypt_ValidateSignature_Error = -40001
+WXBizMsgCrypt_ParseXml_Error = -40002
+WXBizMsgCrypt_ComputeSignature_Error = -40003
+WXBizMsgCrypt_IllegalAesKey = -40004
+WXBizMsgCrypt_ValidateCorpid_Error = -40005
+WXBizMsgCrypt_EncryptAES_Error = -40006
+WXBizMsgCrypt_DecryptAES_Error = -40007
+WXBizMsgCrypt_IllegalBuffer = -40008
+WXBizMsgCrypt_EncodeBase64_Error = -40009
+WXBizMsgCrypt_DecodeBase64_Error = -40010
+WXBizMsgCrypt_GenReturnXml_Error = -40011
+
 class FormatException(Exception):
     pass
 
@@ -48,18 +61,16 @@ class SHA1:
         @return: 安全签名
         """
         try:
-            sortlist = [token, timestamp, nonce, encrypt]
+            sortlist = [token, str(timestamp), nonce, encrypt]
             sortlist.sort()
             sha = hashlib.sha1()
-            sha.update("".join(sortlist).encode("utf-8"))
-            return  ierror.WXBizMsgCrypt_OK, sha.hexdigest()
-        # except Exception,e:
-            # # print e
-            # print(e)
+            sha.update("".join(sortlist).encode())
+            return WXBizMsgCrypt_OK, sha.hexdigest()
         except Exception as e:
-            print(e)
-            return  ierror.WXBizMsgCrypt_ComputeSignature_Error, None
-  
+            logger = logging.getLogger()
+            logger.exception(e)
+            return WXBizMsgCrypt_ComputeSignature_Error, None
+ 
 
 class JsonParse:
     """提供提取消息格式中的密文及生成回复消息格式的接口"""   
