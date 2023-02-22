@@ -36,7 +36,7 @@ def wxpush():
             sVerifyMsgSig, sVerifyTimeStamp, sVerifyNonce, sVerifyEchoStr)
         # print('===============')
         # print(ret,sEchoStr)
-        aa = int(sEchoStr)
+        # sEchoStr = int(sEchoStr)
         # print('===============')
 
         if (ret != 0):
@@ -45,7 +45,8 @@ def wxpush():
         else:
             print("done VerifyURL")
 
-        return jsonify(aa)
+        # return jsonify(sEchoStr)
+        return sEchoStr
 
     if request.method == 'POST':
         try:
