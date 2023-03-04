@@ -131,29 +131,33 @@ def verify_url(request):
     return sechostr
 
 def xml_parse(request):
-    # 微信服务器发来的三个get参数
-    timestamp = request.args.get("timestamp")
-    nonce = request.args.get("nonce")
-    encrypted_bytes = request.data
-    if encrypted_bytes:            
-        # 获取msg_signature参数
-        msg_signature = request.args.get("msg_signature")
-        # 用微信官方提供的SDK解密，附带一个错误码和生成明文
-        ierror, decrypted_bytes = wxcpt.DecryptMsg(
-            encrypted_bytes, msg_signature, timestamp, nonce)
-        # 若错误码为0则表示解密成功
-        print(decrypted_bytes)
+    try:
+        # 微信服务器发来的三个get参数
+        timestamp = request.args.get("timestamp")
+        nonce = request.args.get("nonce")
+        encrypted_bytes = request.data
+        if encrypted_bytes:            
+            # 获取msg_signature参数
+            msg_signature = request.args.get("msg_signature")
+            # 用微信官方提供的SDK解密，附带一个错误码和生成明文
+            ierror, decrypted_bytes = wxcpt.DecryptMsg(
+                encrypted_bytes, msg_signature, timestamp, nonce)
+            # 若错误码为0则表示解密成功
+            print(decrypted_bytes)
 
-        if ierror == 0:
-            # 对XML进行解析
-            xml_tree = ET.fromstring(decrypted_bytes)
-            print(xml_tree)
-            xml_dict = {
-                elem.tag: elem.text for elem in xml_tree.iter()}
-            print(xml_dict)
-            return xml_dict
-    else:
-        print('encrypted_bytes为空')
+            if ierror == 0:
+                # 对XML进行解析
+                xml_tree = ET.fromstring(decrypted_bytes)
+                print(xml_tree)
+                xml_dict = {
+                    elem.tag: elem.text for elem in xml_tree.iter()}
+                print(xml_dict)
+                return xml_dict
+        else:
+            print('encrypted_bytes为空')
+            
+    except Exception as e:
+        print(e)
             
 def msg_download(media_id):
     # 使用企业微信 API 接收消息
