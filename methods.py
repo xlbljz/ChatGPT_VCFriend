@@ -66,25 +66,26 @@ def user_voice2_text(input_file_path):
                 cancellation_details.reason))
             # return 'Speech recognition canceled: {}".format(cancellation_details.reason)'
 
-def communicate_with_chatgpt(input_text):
-    openai.api_key = OPENAIKEY
+def communicate_with_chatgpt(text):
+    openai.api_key = OPENAI_KEY
     while True:
         try:
-            response = openai.Completion.create(
+            response = openai.ChatCompletion.create(
                 model=MODEL,
-                prompt=input_text,
+                messages=[
+        {"role": "user", "content": text}
+    ],
                 temperature=0.7,
                 max_tokens=150,
                 top_p=1,
                 frequency_penalty=1,
                 presence_penalty=0.1,
-                stop=["YOU:", "AI:"]
             )
             break
         except openai.error.RateLimitError:
             time.sleep(0.1)
         
-    return response.choices[0].text
+    return response['choices'][0]['message']['content']
 
 def chatgpt_response2_voice(text):
     now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
