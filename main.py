@@ -11,7 +11,7 @@ if __name__ == '__main__':
         print(request)
 
         if request.method == 'GET':
-            verify_url(request)
+            return verify_url(request)
 
         if request.method == 'POST':
             try:
