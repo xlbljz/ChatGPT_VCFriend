@@ -151,6 +151,9 @@ def xml_parse(request):
             xml_dict = {
                 elem.tag: elem.text for elem in xml_tree.iter()}
             print(xml_dict)
+            return xml_dict
+    else:
+        print('encrypted_bytes为空')
             
 def msg_download(media_id):
     # 使用企业微信 API 接收消息

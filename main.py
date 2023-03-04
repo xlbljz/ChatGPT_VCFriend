@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
         if request.method == 'POST':
             try:
-                print('收到POST回调')
+                print('she', request.json())
                 return Response(status=200)
 
             finally:
