@@ -154,6 +154,8 @@ def xml_parse(request):
                     elem.tag: elem.text for elem in xml_tree.iter()}
                 print(xml_dict)
                 return xml_dict
+            else:
+                print('xml解析错误')
         else:
             print('encrypted_bytes为空')
             
@@ -186,6 +188,7 @@ def msg_download(media_id):
                     # 将下载的数据写入文件
                     for chunk in response.iter_bytes():
                         f.write(chunk)
+                print("下载成功，路径为：", input_file_path)
                 return input_file_path
                 
             else:
