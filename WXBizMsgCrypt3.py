@@ -16,8 +16,7 @@ from Crypto.Cipher import AES
 import xml.etree.cElementTree as ET
 import socket
 
-# import ierror
-from weworkapi_python_master.callback import ierror
+import ierror
 
 
 """

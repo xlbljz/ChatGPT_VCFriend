@@ -1,15 +1,32 @@
-# 里面放着相关的秘钥等信息
+# 相关的秘钥等信息
 import os
-globals().update(os.environ)
-class config():
+
+# [企业微信]
+# 接口回调TOKEN
+WECOM_TOKEN = ''
+# 接口回调AESKEY
+WECOM_AESKEY = ''
+# 企业ID
+WECOM_COMID = ''
+# 应用SECRET
+APP_SECRET = ''
+# 应用ID
+WECOM_AGENTID = '1000003'
+
+# [AZURE SPEECHSDK]
+KEY = ''
+REGION = ''
+#  USE_DEFAULT_SPEAKER
+AUDIO_CONFIG = True
+# THE LANGUAGE AND THE VOICE THAT SPEAKS.
+VOICE = ''
+
+# [CHATGPT]
 # openaikey
-    openaikey = OPENAI_KEY
-# 企业微信的接口回调token
-    sToken = WECOM_TOKEN
-# 企业微信的接口回调AESKEY
-    sEncodingAESKey = WECOM_AESKEY
-# 企业微信的企业ID
-    sCorpID = WECOM_COMID
-#  腾讯云的函数公网访问域名
-    # 应用secret
-    corpsecret = WECOM_APP_SECRET
+OPENAIKEY = ''
+# MODEL TO USE
+MODEL = 'GPT-3.5-TURBO'
+EMAIL = ''
+PASSWORD = ''
+
+globals().update(os.environ)
