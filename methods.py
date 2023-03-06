@@ -67,25 +67,26 @@ def user_voice2_text(input_file_path):
             # return 'Speech recognition canceled: {}".format(cancellation_details.reason)'
 
 def communicate_with_chatgpt(text):
-    openai.api_key = OPENAI_KEY
-    while True:
-        try:
-            response = openai.ChatCompletion.create(
-                model=MODEL,
-                messages=[
-        {"role": "user", "content": text}
-    ],
-                temperature=0.7,
-                max_tokens=150,
-                top_p=1,
-                frequency_penalty=1,
-                presence_penalty=0.1,
-            )
-            break
-        except openai.error.RateLimitError:
-            time.sleep(0.1)
+    # openai.api_key = OPENAI_KEY
+    # while True:
+    #     try:
+    #         response = openai.ChatCompletion.create(
+    #             model=MODEL,
+    #             messages=[
+    #     {"role": "user", "content": text}
+    # ],
+    #             temperature=0.7,
+    #             max_tokens=150,
+    #             top_p=1,
+    #             frequency_penalty=1,
+    #             presence_penalty=0.1,
+    #         )
+    #         break
+    #     except openai.error.RateLimitError:
+    #         time.sleep(0.1)
         
-    return response['choices'][0]['message']['content']
+    # return response['choices'][0]['message']['content']
+    return 'hello world'
 
 def chatgpt_response2_voice(text):
     now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -139,6 +140,7 @@ def xml_parse(request):
         timestamp = request.args.get("timestamp")
         nonce = request.args.get("nonce")
         encrypted_bytes = request.data
+        print(request.data)
         if encrypted_bytes:            
             # 获取msg_signature参数
             msg_signature = request.args.get("msg_signature")
@@ -146,12 +148,10 @@ def xml_parse(request):
             ierror, decrypted_bytes = wxcpt.DecryptMsg(
                 encrypted_bytes, msg_signature, timestamp, nonce)
             # 若错误码为0则表示解密成功
-            print(decrypted_bytes)
 
             if ierror == 0:
                 # 对XML进行解析
                 xml_tree = ET.fromstring(decrypted_bytes)
-                print(xml_tree)
                 xml_dict = {
                     elem.tag: elem.text for elem in xml_tree.iter()}
                 print(xml_dict)
