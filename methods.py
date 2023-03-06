@@ -93,7 +93,7 @@ def chatgpt_response2_voice(text):
     
     # audio_config = AudioOutputConfig(filename=output_file_path + '.wav')
     synthesizer = speechsdk.SpeechSynthesizer(
-        speech_config=speech_config)
+        speech_config=speech_config, audio_config=None)
     
     result = synthesizer.speak_text_async(text).get()
     stream = speechsdk.AudioDataStream(result)
