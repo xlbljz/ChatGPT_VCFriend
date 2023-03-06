@@ -27,26 +27,35 @@ if __name__ == '__main__':
                 print(4)
 
                 try:
-                    print(5)
-
                     xml_dict = xml_parse(request)
                     print(6)
 
                     msg_type = find_key(xml_dict, 'MsgType')
                     print(7)
 
-                    if msg_type == 'voice':
+                    if msg_type in {'voice', 'text'}:
                         print(8)
+                        if msg_type == 'voice':
+                            input_file_path = msg_download(
+                                find_key(xml_dict, 'MediaId'))
+                            input_text = user_voice2_text(input_file_path)
 
-                        input_file_path = msg_download(
-                            find_key(xml_dict, 'MediaId'))
-                        input_text = user_voice2_text(input_file_path)
+                        else:
+                            input_text = find_key(xml_dict, 'Content')
+                            
+                        output_text = communicate_with_chatgpt(input_text)
+                        print(10)
 
-                    elif msg_type == 'text':
-                        print(9)
 
-                        input_text = find_key(xml_dict, 'Content')
+                        output_file_path = chatgpt_response2_voice(output_text)
+                        print(11)
 
+
+                        send_app = Sender(
+                            WECOM_COMID, APP_SECRET, WECOM_AGENTID)
+                        print(find_key(xml_dict, 'FromUserName'))
+                        send_app.send_voice(output_file_path + '.amr', find_key(xml_dict, 'FromUserName'))
+                        
                     elif msg_type == 'event':
                         print('收到事件类型消息')
 
@@ -56,24 +65,13 @@ if __name__ == '__main__':
                     else:
                         print('未添加处理的消息类型')
 
-                    output_text = communicate_with_chatgpt(input_text)
-                    print(10)
-
-
-                    output_file_path = chatgpt_response2_voice(output_text)
-                    print(11)
-
-
-                    send_app = Sender(
-                        WECOM_COMID, APP_SECRET, WECOM_AGENTID)
-                    print(find_key(xml_dict, 'FromUserName'))
-                    send_app.send_voice(output_file_path + '.amr', find_key(xml_dict, 'FromUserName'))
                     print(12)
 
                 except Exception as e:
                     print(13)
 
                     print(e)
-                    
-        print('这家伙啥也没干')
+        else:            
+            print('这家伙啥也没干')
+        print('一次请求处理完毕')
     app.run(host='0.0.0.0', port=80, debug=True)

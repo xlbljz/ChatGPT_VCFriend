@@ -67,36 +67,37 @@ def user_voice2_text(input_file_path):
             # return 'Speech recognition canceled: {}".format(cancellation_details.reason)'
 
 def communicate_with_chatgpt(text):
-    # openai.api_key = OPENAI_KEY
-    # while True:
-    #     try:
-    #         response = openai.ChatCompletion.create(
-    #             model=MODEL,
-    #             messages=[
-    #     {"role": "user", "content": text}
-    # ],
-    #             temperature=0.7,
-    #             max_tokens=150,
-    #             top_p=1,
-    #             frequency_penalty=1,
-    #             presence_penalty=0.1,
-    #         )
-    #         break
-    #     except openai.error.RateLimitError:
-    #         time.sleep(0.1)
+    openai.api_key = OPENAI_KEY
+    while True:
+        try:
+            response = openai.ChatCompletion.create(
+                model=MODEL,
+                messages=[
+        {"role": "user", "content": text}
+    ],
+                temperature=0.7,
+                max_tokens=150,
+                top_p=1,
+                frequency_penalty=1,
+                presence_penalty=0.1,
+            )
+            break
+        except openai.error.RateLimitError:
+            time.sleep(0.1)
         
-    # return response['choices'][0]['message']['content']
-    return 'hello world'
+    return response['choices'][0]['message']['content']
 
 def chatgpt_response2_voice(text):
     now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     output_file_path = f"voice_cache/output/{now}"
     
-    audio_config = AudioOutputConfig(filename=output_file_path + '.wav')
+    # audio_config = AudioOutputConfig(filename=output_file_path + '.wav')
     synthesizer = speechsdk.SpeechSynthesizer(
-        speech_config=speech_config, audio_config=audio_config)
+        speech_config=speech_config)
     
-    synthesizer.speak_text_async(text)
+    result = synthesizer.speak_text_async(text).get()
+    stream = speechsdk.AudioDataStream(result)
+    stream.save_to_wav_file(output_file_path + '.wav')
     
     # 调用 voice_convert 函数将 WAV 文件转换为 AMR 格式
     voice_convert(output_file_path + '.wav', output_file_path + '.amr', 'amr')
