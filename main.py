@@ -66,6 +66,7 @@ if __name__ == '__main__':
 
                     send_app = Sender(
                         WECOM_COMID, APP_SECRET, WECOM_AGENTID)
+                    print(find_key(xml_dict, 'FromUserName'))
                     send_app.send_voice(output_file_path + '.amr', find_key(xml_dict, 'FromUserName'))
                     print(12)
 

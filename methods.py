@@ -89,7 +89,7 @@ def communicate_with_chatgpt(text):
 
 def chatgpt_response2_voice(text):
     now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    output_file_path = f"voice_cache/output/{now}.wav"
+    output_file_path = f"voice_cache/output/{now}"
     
     audio_config = AudioOutputConfig(filename=output_file_path + '.wav')
     synthesizer = speechsdk.SpeechSynthesizer(
@@ -102,10 +102,15 @@ def chatgpt_response2_voice(text):
     
     return output_file_path
 
+fmt_dict = {
+    'amr': '-c:a libamr_nb',
+    'wav': ''
+}
 def voice_convert(input_path, output_path, fmt):
     # 使用 FFmpeg 工具将 WAV 文件转换为 AMR 格式
     try:
-        cmd = ['ffmpeg', '-i', input_path, '-ar', '8000', '-ab', '12.2k', '-ac', '1', '-f', fmt, '-']
+        
+        cmd = ['ffmpeg', '-i', input_path, fmt_dict[fmt], '8000', '-ab', '12.2k', '-ac', '1', '-f', fmt, '-']
         
         with open(output_path, 'wb') as output_file:
             subprocess.run(cmd, stdout=output_file, stderr=subprocess.PIPE, check=True)
@@ -113,6 +118,7 @@ def voice_convert(input_path, output_path, fmt):
     except subprocess.CalledProcessError as e:
         # 打印错误输出
         print(e.stderr.decode())
+        exit(1)
 
 def verify_url(request):
     sverify_msgsig = request.args.get('msg_signature')
