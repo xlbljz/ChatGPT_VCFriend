@@ -102,15 +102,11 @@ def chatgpt_response2_voice(text):
     
     return output_file_path
 
-fmt_dict = {
-    'amr': '-c:a libamr_nb',
-    'wav': ''
-}
 def voice_convert(input_path, output_path, fmt):
     # 使用 FFmpeg 工具将 WAV 文件转换为 AMR 格式
     try:
         
-        cmd = ['ffmpeg', '-i', input_path, fmt_dict[fmt], '8000', '-ab', '12.2k', '-ac', '1', '-f', fmt, '-']
+        cmd = ['ffmpeg', '-i', input_path, '-ar', '8000', '-ab', '12.2k', '-ac', '1', '-f', fmt, '-']
         
         with open(output_path, 'wb') as output_file:
             subprocess.run(cmd, stdout=output_file, stderr=subprocess.PIPE, check=True)
