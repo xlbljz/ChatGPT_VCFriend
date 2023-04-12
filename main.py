@@ -75,4 +75,4 @@ if __name__ == '__main__':
         else:            
             print('这家伙啥也没干')
         print('一次请求处理完毕')
-    app.run(host='0.0.0.0', port=80, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=80, debug=True)
