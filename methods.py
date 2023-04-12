@@ -3,6 +3,7 @@ import json
 import httpx
 import time
 import subprocess
+from loguru import logger
 
 import xml.etree.cElementTree as ET
 
@@ -68,6 +69,7 @@ def user_voice2_text(input_file_path):
 
 def communicate_with_chatgpt(text):
     openai.api_key = OPENAI_KEY
+    logger.debug(f'chatgpt received {text}')
     while True:
         try:
             response = openai.ChatCompletion.create(
@@ -75,27 +77,29 @@ def communicate_with_chatgpt(text):
                 messages=[
         {"role": "user", "content": text}
     ],
+                # prompt=text,
                 temperature=0.7,
                 max_tokens=150,
                 top_p=1,
                 frequency_penalty=1,
                 presence_penalty=0.1,
             )
+            output_words = eval(f"u\'{response['choices'][0]['message']['content']}\'")
+            logger.debug(f'chatgpt response {output_words}')
             break
         except openai.error.RateLimitError:
             time.sleep(0.1)
         
-    return response['choices'][0]['message']['content']
+    return output_words
 
 def chatgpt_response2_voice(text):
     now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     output_file_path = f"voice_cache/output/{now}"
     
-    # audio_config = AudioOutputConfig(filename=output_file_path + '.wav')
-    synthesizer = speechsdk.SpeechSynthesizer(
-        speech_config=speech_config, audio_config=None)
-    
-    result = synthesizer.speak_text_async(text).get()
+    speech_config.speech_synthesis_language = "zh-CN"
+    # speech_config.speech_synthesis_voice_name = "zh-CN-XiaoyouNeural"
+    speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config)
+    result = speech_synthesizer.speak_text_async(text).get()
     stream = speechsdk.AudioDataStream(result)
     stream.save_to_wav_file(output_file_path + '.wav')
     

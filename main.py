@@ -53,8 +53,9 @@ if __name__ == '__main__':
 
                         send_app = Sender(
                             WECOM_COMID, APP_SECRET, WECOM_AGENTID)
-                        print(find_key(xml_dict, 'FromUserName'))
-                        send_app.send_voice(output_file_path + '.amr', find_key(xml_dict, 'FromUserName'))
+                        user_name = find_key(xml_dict, 'FromUserName')
+                        print(user_name)
+                        send_app.send_voice(output_file_path + '.amr',  touser=user_name)
                         
                     elif msg_type == 'event':
                         print('收到事件类型消息')
@@ -74,4 +75,4 @@ if __name__ == '__main__':
         else:            
             print('这家伙啥也没干')
         print('一次请求处理完毕')
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True, use_reloader=False)
